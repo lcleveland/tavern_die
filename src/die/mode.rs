@@ -10,3 +10,9 @@ pub enum RollMode {
     CountSuccesses,
     CountFailures,
 }
+
+pub enum ComparisonMode {
+    GreaterThan,
+    LessThan,
+    Equal,
+}
