@@ -43,29 +43,29 @@ impl Die {
             ComparisonMode::Equal => {
                 while let RollMode::Reroll(target) = self.roll_mode {
                     if die_roll != target {
+                        result.results.push(die_roll);
                         break;
                     }
                     die_roll = self.engine_roll();
                 }
-                result.results.push(die_roll);
             }
             ComparisonMode::LessThan => {
                 while let RollMode::Reroll(target) = self.roll_mode {
                     if die_roll > target {
+                        result.results.push(die_roll);
                         break;
                     }
                     die_roll = self.engine_roll();
                 }
-                result.results.push(die_roll);
             }
             ComparisonMode::GreaterThan => {
                 while let RollMode::Reroll(target) = self.roll_mode {
                     if die_roll < target {
+                        result.results.push(die_roll);
                         break;
                     }
                     die_roll = self.engine_roll();
                 }
-                result.results.push(die_roll);
             }
         };
         result
@@ -73,10 +73,38 @@ impl Die {
 
     fn exploding(&self) -> RollResult {
         let mut result = RollResult::new();
+        let mut die_roll = self.engine_roll();
         match self.comparison_mode {
-            ComparisonMode::Equal => {}
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
+            ComparisonMode::Equal => {
+                while let RollMode::Exploding(target) = self.roll_mode {
+                    if die_roll != target {
+                        result.results.push(die_roll);
+                        break;
+                    }
+                    result.results.push(die_roll);
+                    die_roll = self.engine_roll();
+                }
+            }
+            ComparisonMode::LessThan => {
+                while let RollMode::Exploding(target) = self.roll_mode {
+                    if die_roll >= target {
+                        result.results.push(die_roll);
+                        break;
+                    }
+                    result.results.push(die_roll);
+                    die_roll = self.engine_roll();
+                }
+            }
+            ComparisonMode::GreaterThan => {
+                while let RollMode::Exploding(target) = self.roll_mode {
+                    if die_roll <= target {
+                        result.results.push(die_roll);
+                        break;
+                    }
+                    result.results.push(die_roll);
+                    die_roll = self.engine_roll();
+                }
+            }
         }
         result
     }
