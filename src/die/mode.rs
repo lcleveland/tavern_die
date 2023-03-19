@@ -4,12 +4,12 @@ pub enum RollMode {
     KeepLowest(i64),
     DropHighest(i64),
     DropLowest(i64),
-    Reroll(ComparisonMode, i64),
-    Exploding(ComparisonMode, i64),
-    Compounding(ComparisonMode, i64),
-    Penetrating(ComparisonMode, i64),
-    CountSuccesses(ComparisonMode, i64),
-    CountFailures(ComparisonMode, i64),
+    Reroll(i64),
+    Exploding(i64),
+    Compounding(i64),
+    Penetrating(i64),
+    CountSuccesses(i64),
+    CountFailures(i64),
 }
 
 pub enum ComparisonMode {
