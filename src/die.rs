@@ -40,14 +40,14 @@ impl Die {
         let mut result = RollResult::new();
         match self.comparison_mode {
             ComparisonMode::Equal => {
-                let roll = self.engine.random(1, self.sides);
-                if roll == self.roll_mode[1] {
-                } else {
-                    result.results.push(roll);
+                let die_roll: i64 = self.engine.random(1, self.sides);
+                while let RollMode::Reroll(die_roll) = self.roll_mode {
+                    die_roll = self.engine.random(1, self.sides);
                 }
+                result.results.push(die_roll);
             }
-            ComparisonMode::LessThan => 2,
-            ComparisonMode::GreaterThan => 3,
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
         };
         result
     }
@@ -68,16 +68,16 @@ impl Rollable for Die {
     fn roll(&self) -> RollResult {
         match self.roll_mode {
             RollMode::Normal => self.normal_roll(),
-            RollMode::Reroll(_, _) => self.normal_roll(),
-            RollMode::Exploding(_, _) => self.normal_roll(),
+            RollMode::Reroll(_) => self.normal_roll(),
+            RollMode::Exploding(_) => self.normal_roll(),
             RollMode::KeepLowest(_) => self.normal_roll(),
             RollMode::DropLowest(_) => self.normal_roll(),
             RollMode::KeepHighest(_) => self.normal_roll(),
             RollMode::DropHighest(_) => self.normal_roll(),
-            RollMode::Compounding(_, _) => self.normal_roll(),
-            RollMode::Penetrating(_, _) => self.normal_roll(),
-            RollMode::CountFailures(_, _) => self.normal_roll(),
-            RollMode::CountSuccesses(_, _) => self.normal_roll(),
+            RollMode::Compounding(_) => self.normal_roll(),
+            RollMode::Penetrating(_) => self.normal_roll(),
+            RollMode::CountFailures(_) => self.normal_roll(),
+            RollMode::CountSuccesses(_) => self.normal_roll(),
         }
     }
 }
