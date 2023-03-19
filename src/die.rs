@@ -40,8 +40,11 @@ impl Die {
         let mut result = RollResult::new();
         match self.comparison_mode {
             ComparisonMode::Equal => {
-                let die_roll: i64 = self.engine.random(1, self.sides);
-                while let RollMode::Reroll(die_roll) = self.roll_mode {
+                let mut die_roll: i64 = self.engine.random(1, self.sides);
+                while let RollMode::Reroll(target) = self.roll_mode {
+                    if target != die_roll {
+                        break;
+                    }
                     die_roll = self.engine.random(1, self.sides);
                 }
                 result.results.push(die_roll);
