@@ -1,4 +1,5 @@
 pub enum RollMode {
+    Normal,
     KeepHighest(i64),
     KeepLowest(i64),
     DropHighest(i64),

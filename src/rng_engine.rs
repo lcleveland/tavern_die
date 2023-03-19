@@ -1,2 +1,2 @@
 pub mod prng_engine;
-mod traits;
+pub mod traits;

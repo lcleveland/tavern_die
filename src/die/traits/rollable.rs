@@ -1,5 +1,5 @@
 use crate::die::roll_result::RollResult;
 
-pub trait rollable {
+pub trait Rollable {
     fn roll(&self) -> RollResult;
 }
