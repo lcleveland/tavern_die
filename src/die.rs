@@ -30,9 +30,9 @@ impl Die {
         }
     }
 
-    fn normal_roll(&self) -> RollResult {
+    fn normal(&self) -> RollResult {
         let mut result = RollResult::new();
-        result.results.push(self.engine.random(1, self.sides));
+        result.results.push(self.engine_roll());
         result
     }
 
@@ -71,6 +71,94 @@ impl Die {
         result
     }
 
+    fn exploding(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+
+    fn keep_lowest(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+
+    fn keep_highest(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+    fn drop_highest(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+
+    fn drop_lowest(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+
+    fn compounding(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+
+    fn penetrating(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+
+    fn count_failures(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+    fn count_successes(&self) -> RollResult {
+        let mut result = RollResult::new();
+        match self.comparison_mode {
+            ComparisonMode::Equal => {}
+            ComparisonMode::LessThan => {}
+            ComparisonMode::GreaterThan => {}
+        }
+        result
+    }
+
     fn engine_roll(&self) -> i64 {
         self.engine.random(1, self.sides)
     }
@@ -90,17 +178,17 @@ impl Default for Die {
 impl Rollable for Die {
     fn roll(&self) -> RollResult {
         match self.roll_mode {
-            RollMode::Normal => self.normal_roll(),
+            RollMode::Normal => self.normal(),
             RollMode::Reroll(_) => self.reroll(),
-            RollMode::Exploding(_) => self.normal_roll(),
-            RollMode::KeepLowest(_) => self.normal_roll(),
-            RollMode::DropLowest(_) => self.normal_roll(),
-            RollMode::KeepHighest(_) => self.normal_roll(),
-            RollMode::DropHighest(_) => self.normal_roll(),
-            RollMode::Compounding(_) => self.normal_roll(),
-            RollMode::Penetrating(_) => self.normal_roll(),
-            RollMode::CountFailures(_) => self.normal_roll(),
-            RollMode::CountSuccesses(_) => self.normal_roll(),
+            RollMode::Exploding(_) => self.exploding(),
+            RollMode::KeepLowest(_) => self.keep_lowest(),
+            RollMode::DropLowest(_) => self.drop_lowest(),
+            RollMode::KeepHighest(_) => self.keep_highest(),
+            RollMode::DropHighest(_) => self.drop_highest(),
+            RollMode::Compounding(_) => self.compounding(),
+            RollMode::Penetrating(_) => self.penetrating(),
+            RollMode::CountFailures(_) => self.count_failures(),
+            RollMode::CountSuccesses(_) => self.count_successes(),
         }
     }
 }
