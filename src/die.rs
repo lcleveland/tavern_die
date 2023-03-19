@@ -38,21 +38,41 @@ impl Die {
 
     fn reroll(&self) -> RollResult {
         let mut result = RollResult::new();
+        let mut die_roll: i64 = self.engine_roll();
         match self.comparison_mode {
             ComparisonMode::Equal => {
-                let mut die_roll: i64 = self.engine.random(1, self.sides);
                 while let RollMode::Reroll(target) = self.roll_mode {
-                    if target != die_roll {
+                    if die_roll != target {
                         break;
                     }
-                    die_roll = self.engine.random(1, self.sides);
+                    die_roll = self.engine_roll();
                 }
                 result.results.push(die_roll);
             }
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
+            ComparisonMode::LessThan => {
+                while let RollMode::Reroll(target) = self.roll_mode {
+                    if die_roll > target {
+                        break;
+                    }
+                    die_roll = self.engine_roll();
+                }
+                result.results.push(die_roll);
+            }
+            ComparisonMode::GreaterThan => {
+                while let RollMode::Reroll(target) = self.roll_mode {
+                    if die_roll < target {
+                        break;
+                    }
+                    die_roll = self.engine_roll();
+                }
+                result.results.push(die_roll);
+            }
         };
         result
+    }
+
+    fn engine_roll(&self) -> i64 {
+        self.engine.random(1, self.sides)
     }
 }
 
@@ -71,7 +91,7 @@ impl Rollable for Die {
     fn roll(&self) -> RollResult {
         match self.roll_mode {
             RollMode::Normal => self.normal_roll(),
-            RollMode::Reroll(_) => self.normal_roll(),
+            RollMode::Reroll(_) => self.reroll(),
             RollMode::Exploding(_) => self.normal_roll(),
             RollMode::KeepLowest(_) => self.normal_roll(),
             RollMode::DropLowest(_) => self.normal_roll(),
