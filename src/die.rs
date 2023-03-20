@@ -210,10 +210,29 @@ impl Die {
 
     fn failure(&self) -> RollResult {
         let mut result = RollResult::new();
+        let die_roll = self.engine_roll();
         match self.comparison_mode {
-            ComparisonMode::Equal => {}
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
+            ComparisonMode::Equal => {
+                if let RollMode::Failure(target) = self.roll_mode {
+                    if die_roll != target {
+                        result.results.push(die_roll);
+                    }
+                }
+            }
+            ComparisonMode::LessThan => {
+                if let RollMode::Failure(target) = self.roll_mode {
+                    if die_roll >= target {
+                        result.results.push(die_roll);
+                    }
+                }
+            }
+            ComparisonMode::GreaterThan => {
+                if let RollMode::Failure(target) = self.roll_mode {
+                    if die_roll <= target {
+                        result.results.push(die_roll);
+                    }
+                }
+            }
         }
         result
     }
