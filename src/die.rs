@@ -1,6 +1,5 @@
 pub mod mode;
 pub mod roll_result;
-pub mod traits;
 
 use crate::die::mode::{ComparisonMode, RollMode};
 use crate::die::roll_result::RollResult;
