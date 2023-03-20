@@ -314,3 +314,42 @@ impl Rollable for Die {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn create_new_die_test() {
+        let _die = Die::new(
+            RollMode::Normal,
+            ComparisonMode::Equal,
+            Box::new(PrngEngine::new()),
+            6,
+        );
+    }
+
+    #[test]
+    fn roll_normal_die_test() {
+        let die = Die::new(
+            RollMode::Normal,
+            ComparisonMode::Equal,
+            Box::new(PrngEngine::new()),
+            6,
+        );
+        let roll = die.roll();
+        assert_eq!(roll.results.len(), 1);
+    }
+
+    #[test]
+    fn roll_exploding_die_test() {
+        let die = Die::new(
+            RollMode::Exploding(4),
+            ComparisonMode::Equal,
+            Box::new(PrngEngine::new()),
+            4,
+        );
+        let roll = die.roll();
+        assert_eq!(roll.results.len() >= 1, true);
+    }
+}
