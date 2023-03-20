@@ -239,14 +239,14 @@ impl Die {
             }
             ComparisonMode::LessThan => {
                 if let RollMode::Failure(target) = self.roll_mode {
-                    if die_roll >= target {
+                    if die_roll > target {
                         result.results.push(die_roll);
                     }
                 }
             }
             ComparisonMode::GreaterThan => {
                 if let RollMode::Failure(target) = self.roll_mode {
-                    if die_roll <= target {
+                    if die_roll < target {
                         result.results.push(die_roll);
                     }
                 }
@@ -269,14 +269,14 @@ impl Die {
             }
             ComparisonMode::LessThan => {
                 if let RollMode::Success(target) = self.roll_mode {
-                    if die_roll <= target {
+                    if die_roll < target {
                         result.results.push(die_roll);
                     }
                 }
             }
             ComparisonMode::GreaterThan => {
                 if let RollMode::Success(target) = self.roll_mode {
-                    if die_roll >= target {
+                    if die_roll > target {
                         result.results.push(die_roll);
                     }
                 }
