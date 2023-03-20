@@ -153,10 +153,57 @@ impl Die {
 
     fn penetrating(&self) -> RollResult {
         let mut result = RollResult::new();
+        let mut die_roll = self.engine_roll();
+        let mut penetrated = false;
         match self.comparison_mode {
-            ComparisonMode::Equal => {}
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
+            ComparisonMode::Equal => {
+                while let RollMode::Penetrating(target) = self.roll_mode {
+                    if die_roll != target {
+                        if penetrated {
+                            die_roll -= 1
+                        }
+                        result.results.push(die_roll);
+                        break;
+                    }
+                    if penetrated {
+                        die_roll -= 1;
+                    }
+                    penetrated = true;
+                    result.results.push(die_roll);
+                    die_roll = self.engine_roll();
+                }
+            }
+            ComparisonMode::LessThan => {
+                while let RollMode::Penetrating(target) = self.roll_mode {
+                    if die_roll >= target {
+                        if penetrated {
+                            die_roll -= 1;
+                        }
+                        result.results.push(die_roll);
+                        break;
+                    }
+                    if penetrated {
+                        die_roll -= 1;
+                    }
+                    penetrated = true;
+                    result.results.push(die_roll);
+                    die_roll = self.engine_roll();
+                }
+            }
+            ComparisonMode::GreaterThan => {
+                while let RollMode::Penetrating(target) = self.roll_mode {
+                    if die_roll <= target {
+                        if penetrated {
+                            die_roll -= 1;
+                        }
+                        result.results.push(die_roll);
+                        break;
+                    }
+                    penetrated = true;
+                    result.results.push(die_roll);
+                    die_roll = self.engine_roll();
+                }
+            }
         }
         result
     }
