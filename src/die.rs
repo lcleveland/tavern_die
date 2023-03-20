@@ -213,6 +213,9 @@ impl Die {
                         result.results.push(die_roll);
                         break;
                     }
+                    if penetrated {
+                        die_roll -= 1;
+                    }
                     penetrated = true;
                     result.results.push(die_roll);
                     die_roll = self.engine_roll();
