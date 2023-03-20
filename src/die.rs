@@ -109,51 +109,44 @@ impl Die {
         result
     }
 
-    fn keep_lowest(&self) -> RollResult {
-        let mut result = RollResult::new();
-        match self.comparison_mode {
-            ComparisonMode::Equal => {}
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
-        }
-        result
-    }
-
-    fn keep_highest(&self) -> RollResult {
-        let mut result = RollResult::new();
-        match self.comparison_mode {
-            ComparisonMode::Equal => {}
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
-        }
-        result
-    }
-    fn drop_highest(&self) -> RollResult {
-        let mut result = RollResult::new();
-        match self.comparison_mode {
-            ComparisonMode::Equal => {}
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
-        }
-        result
-    }
-
-    fn drop_lowest(&self) -> RollResult {
-        let mut result = RollResult::new();
-        match self.comparison_mode {
-            ComparisonMode::Equal => {}
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
-        }
-        result
-    }
-
     fn compounding(&self) -> RollResult {
         let mut result = RollResult::new();
+        let mut die_roll = self.engine_roll();
+        let mut compounding_total = 0;
         match self.comparison_mode {
-            ComparisonMode::Equal => {}
-            ComparisonMode::LessThan => {}
-            ComparisonMode::GreaterThan => {}
+            ComparisonMode::Equal => {
+                while let RollMode::Compounding(target) = self.roll_mode {
+                    if die_roll != target {
+                        compounding_total += die_roll;
+                        result.results.push(compounding_total);
+                        break;
+                    }
+                    compounding_total += die_roll;
+                    die_roll = self.engine_roll();
+                }
+            }
+            ComparisonMode::LessThan => {
+                while let RollMode::Compounding(target) = self.roll_mode {
+                    if die_roll >= target {
+                        compounding_total += die_roll;
+                        result.results.push(compounding_total);
+                        break;
+                    }
+                    compounding_total += die_roll;
+                    die_roll = self.engine_roll();
+                }
+            }
+            ComparisonMode::GreaterThan => {
+                while let RollMode::Compounding(target) = self.roll_mode {
+                    if die_roll <= target {
+                        compounding_total += die_roll;
+                        result.results.push(compounding_total);
+                        break;
+                    }
+                    compounding_total += die_roll;
+                    die_roll = self.engine_roll();
+                }
+            }
         }
         result
     }
@@ -168,7 +161,7 @@ impl Die {
         result
     }
 
-    fn count_failures(&self) -> RollResult {
+    fn failure(&self) -> RollResult {
         let mut result = RollResult::new();
         match self.comparison_mode {
             ComparisonMode::Equal => {}
@@ -177,7 +170,7 @@ impl Die {
         }
         result
     }
-    fn count_successes(&self) -> RollResult {
+    fn success(&self) -> RollResult {
         let mut result = RollResult::new();
         match self.comparison_mode {
             ComparisonMode::Equal => {}
@@ -209,14 +202,10 @@ impl Rollable for Die {
             RollMode::Normal => self.normal(),
             RollMode::Reroll(_) => self.reroll(),
             RollMode::Exploding(_) => self.exploding(),
-            RollMode::KeepLowest(_) => self.keep_lowest(),
-            RollMode::DropLowest(_) => self.drop_lowest(),
-            RollMode::KeepHighest(_) => self.keep_highest(),
-            RollMode::DropHighest(_) => self.drop_highest(),
             RollMode::Compounding(_) => self.compounding(),
             RollMode::Penetrating(_) => self.penetrating(),
-            RollMode::CountFailures(_) => self.count_failures(),
-            RollMode::CountSuccesses(_) => self.count_successes(),
+            RollMode::Failure(_) => self.failure(),
+            RollMode::Success(_) => self.success(),
         }
     }
 }
