@@ -4,7 +4,6 @@ pub mod traits;
 
 use crate::die::mode::{ComparisonMode, RollMode};
 use crate::die::roll_result::RollResult;
-use crate::die::traits::rollable::Rollable;
 use crate::rng_engine::prng_engine::PrngEngine;
 use crate::rng_engine::traits::engine::Engine;
 
@@ -62,7 +61,7 @@ impl Die {
             }
             ComparisonMode::LessThan => {
                 while let RollMode::Reroll(target) = self.roll_mode {
-                    if die_roll > target {
+                    if die_roll >= target {
                         result.results.push(die_roll);
                         break;
                     }
@@ -71,7 +70,7 @@ impl Die {
             }
             ComparisonMode::GreaterThan => {
                 while let RollMode::Reroll(target) = self.roll_mode {
-                    if die_roll < target {
+                    if die_roll <= target {
                         result.results.push(die_roll);
                         break;
                     }
@@ -289,6 +288,18 @@ impl Die {
     fn engine_roll(&self) -> i64 {
         self.engine.random(1, self.sides)
     }
+
+    pub fn roll(&self) -> RollResult {
+        match self.roll_mode {
+            RollMode::Normal => self.normal(),
+            RollMode::Reroll(_) => self.reroll(),
+            RollMode::Exploding(_) => self.exploding(),
+            RollMode::Compounding(_) => self.compounding(),
+            RollMode::Penetrating(_) => self.penetrating(),
+            RollMode::Failure(_) => self.failure(),
+            RollMode::Success(_) => self.success(),
+        }
+    }
 }
 
 impl Default for Die {
@@ -300,21 +311,6 @@ impl Default for Die {
             Box::new(PrngEngine::new()),
             20,
         )
-    }
-}
-
-impl Rollable for Die {
-    /// Roll the die
-    fn roll(&self) -> RollResult {
-        match self.roll_mode {
-            RollMode::Normal => self.normal(),
-            RollMode::Reroll(_) => self.reroll(),
-            RollMode::Exploding(_) => self.exploding(),
-            RollMode::Compounding(_) => self.compounding(),
-            RollMode::Penetrating(_) => self.penetrating(),
-            RollMode::Failure(_) => self.failure(),
-            RollMode::Success(_) => self.success(),
-        }
     }
 }
 
