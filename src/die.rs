@@ -8,14 +8,23 @@ use crate::die::traits::rollable::Rollable;
 use crate::rng_engine::prng_engine::PrngEngine;
 use crate::rng_engine::traits::engine::Engine;
 
+/// A struct for rolling dice, with advanced features
 pub struct Die {
+    /// Controls the logic used when rolling the die
     pub roll_mode: RollMode,
+
+    /// Controls how comparisons are made when rolling dice
     pub comparison_mode: ComparisonMode,
+
+    /// How many sides the die has
     pub sides: i64,
+
+    /// Controls how random numbers are generated
     pub engine: Box<dyn Engine>,
 }
 
 impl Die {
+    /// Create a new die
     pub fn new(
         roll_mode: RollMode,
         comparison_mode: ComparisonMode,
@@ -30,12 +39,14 @@ impl Die {
         }
     }
 
+    /// Roll a die with no logic
     fn normal(&self) -> RollResult {
         let mut result = RollResult::new();
         result.results.push(self.engine_roll());
         result
     }
 
+    /// Roll a die and re-roll if matching criteria
     fn reroll(&self) -> RollResult {
         let mut result = RollResult::new();
         let mut die_roll: i64 = self.engine_roll();
@@ -71,6 +82,7 @@ impl Die {
         result
     }
 
+    /// Roll a die and add more dice based on criteria
     fn exploding(&self) -> RollResult {
         let mut result = RollResult::new();
         let mut die_roll = self.engine_roll();
@@ -109,6 +121,7 @@ impl Die {
         result
     }
 
+    /// Roll a die and add to the total based on criteria
     fn compounding(&self) -> RollResult {
         let mut result = RollResult::new();
         let mut die_roll = self.engine_roll();
@@ -151,6 +164,7 @@ impl Die {
         result
     }
 
+    /// Roll a die and add another die subtracting 1 based on criteria
     fn penetrating(&self) -> RollResult {
         let mut result = RollResult::new();
         let mut die_roll = self.engine_roll();
@@ -208,6 +222,7 @@ impl Die {
         result
     }
 
+    /// Roll a die, if the die fails criteria return it; otherwise leave results empty
     fn failure(&self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll = self.engine_roll();
@@ -236,6 +251,8 @@ impl Die {
         }
         result
     }
+
+    /// Roll a die, if the die matches criteria return it; otherwise leave results empty
     fn success(&self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll = self.engine_roll();
@@ -265,12 +282,14 @@ impl Die {
         result
     }
 
+    /// Makes a call to the rng engine to generate a number
     fn engine_roll(&self) -> i64 {
         self.engine.random(1, self.sides)
     }
 }
 
 impl Default for Die {
+    /// Creates a default die with 20 sides
     fn default() -> Die {
         Die::new(
             RollMode::Normal,
@@ -282,6 +301,7 @@ impl Default for Die {
 }
 
 impl Rollable for Die {
+    /// Roll the die
     fn roll(&self) -> RollResult {
         match self.roll_mode {
             RollMode::Normal => self.normal(),
