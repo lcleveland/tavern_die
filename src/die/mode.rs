@@ -1,15 +1,15 @@
 pub enum RollMode {
     Normal,
-    Reroll(i64),
-    Exploding(i64),
-    Compounding(i64),
-    Penetrating(i64),
-    Success(i64),
-    Failure(i64),
+    Reroll,
+    Exploding,
+    Compounding,
+    Penetrating,
+    Success,
+    Failure,
 }
 
 pub enum ComparisonMode {
-    GreaterThan,
-    LessThan,
-    Equal,
+    GreaterThan(i64),
+    LessThan(i64),
+    Equal(i64),
 }
