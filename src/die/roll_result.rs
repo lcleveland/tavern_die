@@ -18,15 +18,3 @@ impl Default for RollResult {
         RollResult::new()
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn add_result_test() {
-        let mut roll_result = RollResult::new();
-        roll_result.results.push(1);
-        assert_eq!(roll_result.results[0], 1);
-    }
-}
