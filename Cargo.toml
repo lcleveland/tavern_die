@@ -1,5 +1,5 @@
 [package]
-name = "die"
+name = "tavern_die"
 version = "0.1.0"
 edition = "2021"
 description = "A package to roll a die with different modes."
