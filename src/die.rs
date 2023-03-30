@@ -199,48 +199,48 @@ impl Die {
         result
     }
 
-    /// Roll a die, if the die fails criteria return it; otherwise leave results empty
+    /// Roll a die, if the die fails criteria return one; otherwise leave results empty
     fn failure(&self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll = self.engine_roll();
         match self.comparison_mode {
             ComparisonMode::Equal(target) => {
                 if die_roll != target {
-                    result.results.push(die_roll);
+                    result.results.push(1);
                 }
             }
             ComparisonMode::LessThan(target) => {
                 if die_roll > target {
-                    result.results.push(die_roll);
+                    result.results.push(1);
                 }
             }
             ComparisonMode::GreaterThan(target) => {
                 if die_roll < target {
-                    result.results.push(die_roll);
+                    result.results.push(1);
                 }
             }
         }
         result
     }
 
-    /// Roll a die, if the die matches criteria return it; otherwise leave results empty
+    /// Roll a die, if the die matches criteria return one; otherwise leave results empty
     fn success(&self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll = self.engine_roll();
         match self.comparison_mode {
             ComparisonMode::Equal(target) => {
                 if die_roll == target {
-                    result.results.push(die_roll);
+                    result.results.push(1);
                 }
             }
             ComparisonMode::LessThan(target) => {
                 if die_roll < target {
-                    result.results.push(die_roll);
+                    result.results.push(1);
                 }
             }
             ComparisonMode::GreaterThan(target) => {
                 if die_roll > target {
-                    result.results.push(die_roll);
+                    result.results.push(1);
                 }
             }
         }
