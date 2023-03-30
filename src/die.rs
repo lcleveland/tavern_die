@@ -37,10 +37,25 @@ impl Die {
         }
     }
 
-    /// Roll a die with no logic
+    /// Roll a die with minimal logic
     fn normal(&self) -> RollResult {
         let mut result = RollResult::new();
-        result.results.push(self.engine_roll());
+        let die_roll: i64 = self.engine_roll();
+        match self.comparison_mode {
+            ComparisonMode::Equal(_) => {
+                result.results.push(die_roll);
+            }
+            ComparisonMode::LessThan(target) => {
+                if die_roll < target {
+                    result.results.push(die_roll);
+                }
+            }
+            ComparisonMode::GreaterThan(target) => {
+                if die_roll > target {
+                    result.results.push(die_roll);
+                }
+            }
+        }
         result
     }
 
