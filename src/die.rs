@@ -43,16 +43,16 @@ impl Die {
         let die_roll: i64 = self.engine_roll();
         match self.comparison_mode {
             ComparisonMode::Equal(_) => {
-                result.results.push(die_roll);
+                result.dice_rolls.push(die_roll);
             }
             ComparisonMode::LessThan(target) => {
                 if die_roll < target {
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                 }
             }
             ComparisonMode::GreaterThan(target) => {
                 if die_roll > target {
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                 }
             }
         }
@@ -66,21 +66,21 @@ impl Die {
         match self.comparison_mode {
             ComparisonMode::Equal(target) => loop {
                 if die_roll != target {
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
                 die_roll = self.engine_roll();
             },
             ComparisonMode::LessThan(target) => loop {
                 if die_roll >= target {
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
                 die_roll = self.engine_roll();
             },
             ComparisonMode::GreaterThan(target) => loop {
                 if die_roll <= target {
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
                 die_roll = self.engine_roll();
@@ -96,26 +96,26 @@ impl Die {
         match self.comparison_mode {
             ComparisonMode::Equal(target) => loop {
                 if die_roll != target {
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
-                result.results.push(die_roll);
+                result.dice_rolls.push(die_roll);
                 die_roll = self.engine_roll();
             },
             ComparisonMode::LessThan(target) => loop {
                 if die_roll >= target {
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
-                result.results.push(die_roll);
+                result.dice_rolls.push(die_roll);
                 die_roll = self.engine_roll();
             },
             ComparisonMode::GreaterThan(target) => loop {
                 if die_roll <= target {
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
-                result.results.push(die_roll);
+                result.dice_rolls.push(die_roll);
                 die_roll = self.engine_roll();
             },
         }
@@ -131,7 +131,7 @@ impl Die {
             ComparisonMode::Equal(target) => loop {
                 if die_roll != target {
                     compounding_total += die_roll;
-                    result.results.push(compounding_total);
+                    result.dice_rolls.push(compounding_total);
                     break;
                 }
                 compounding_total += die_roll;
@@ -140,7 +140,7 @@ impl Die {
             ComparisonMode::LessThan(target) => loop {
                 if die_roll >= target {
                     compounding_total += die_roll;
-                    result.results.push(compounding_total);
+                    result.dice_rolls.push(compounding_total);
                     break;
                 }
                 compounding_total += die_roll;
@@ -149,7 +149,7 @@ impl Die {
             ComparisonMode::GreaterThan(target) => loop {
                 if die_roll <= target {
                     compounding_total += die_roll;
-                    result.results.push(compounding_total);
+                    result.dice_rolls.push(compounding_total);
                     break;
                 }
                 compounding_total += die_roll;
@@ -170,14 +170,14 @@ impl Die {
                     if penetrated {
                         die_roll -= 1
                     }
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
                 if penetrated {
                     die_roll -= 1;
                 }
                 penetrated = true;
-                result.results.push(die_roll);
+                result.dice_rolls.push(die_roll);
                 die_roll = self.engine_roll();
             },
             ComparisonMode::LessThan(target) => loop {
@@ -185,14 +185,14 @@ impl Die {
                     if penetrated {
                         die_roll -= 1;
                     }
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
                 if penetrated {
                     die_roll -= 1;
                 }
                 penetrated = true;
-                result.results.push(die_roll);
+                result.dice_rolls.push(die_roll);
                 die_roll = self.engine_roll();
             },
             ComparisonMode::GreaterThan(target) => loop {
@@ -200,62 +200,62 @@ impl Die {
                     if penetrated {
                         die_roll -= 1;
                     }
-                    result.results.push(die_roll);
+                    result.dice_rolls.push(die_roll);
                     break;
                 }
                 if penetrated {
                     die_roll -= 1;
                 }
                 penetrated = true;
-                result.results.push(die_roll);
+                result.dice_rolls.push(die_roll);
                 die_roll = self.engine_roll();
             },
         }
         result
     }
 
-    /// Roll a die, if the die fails criteria return one; otherwise leave results empty
+    /// Roll a die, if the die fails criteria return one; otherwise leave dice_rolls empty
     fn failure(&self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll = self.engine_roll();
         match self.comparison_mode {
             ComparisonMode::Equal(target) => {
                 if die_roll != target {
-                    result.results.push(1);
+                    result.dice_rolls.push(1);
                 }
             }
             ComparisonMode::LessThan(target) => {
                 if die_roll > target {
-                    result.results.push(1);
+                    result.dice_rolls.push(1);
                 }
             }
             ComparisonMode::GreaterThan(target) => {
                 if die_roll < target {
-                    result.results.push(1);
+                    result.dice_rolls.push(1);
                 }
             }
         }
         result
     }
 
-    /// Roll a die, if the die matches criteria return one; otherwise leave results empty
+    /// Roll a die, if the die matches criteria return one; otherwise leave dice_rolls empty
     fn success(&self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll = self.engine_roll();
         match self.comparison_mode {
             ComparisonMode::Equal(target) => {
                 if die_roll == target {
-                    result.results.push(1);
+                    result.dice_rolls.push(1);
                 }
             }
             ComparisonMode::LessThan(target) => {
                 if die_roll < target {
-                    result.results.push(1);
+                    result.dice_rolls.push(1);
                 }
             }
             ComparisonMode::GreaterThan(target) => {
                 if die_roll > target {
-                    result.results.push(1);
+                    result.dice_rolls.push(1);
                 }
             }
         }
