@@ -50,3 +50,14 @@ fn reroll_greater_than_test() {
     die.engine = Box::new(engine);
     assert_eq!(die.roll().dice_rolls[0], 3);
 }
+
+#[test]
+fn reroll_less_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    engine.rolls = vec![3, 69];
+    die.roll_mode = tavern_die::die::mode::RollMode::Reroll;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::LessThan(20);
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().dice_rolls[0], 69);
+}
