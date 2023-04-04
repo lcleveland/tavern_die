@@ -1,7 +1,7 @@
 use crate::rng_engine::traits::engine::Engine;
 
 pub struct TestEngine {
-    rolls: Vec<i64>,
+    pub rolls: Vec<i64>,
 }
 
 impl TestEngine {
