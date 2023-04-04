@@ -38,7 +38,7 @@ impl Die {
     }
 
     /// Roll a die with minimal logic
-    fn normal(&self) -> RollResult {
+    fn normal(&mut self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll: i64 = self.engine_roll();
         match self.comparison_mode {
@@ -60,7 +60,7 @@ impl Die {
     }
 
     /// Roll a die and re-roll if matching criteria
-    fn reroll(&self) -> RollResult {
+    fn reroll(&mut self) -> RollResult {
         let mut result = RollResult::new();
         let mut die_roll: i64 = self.engine_roll();
         match self.comparison_mode {
@@ -69,6 +69,8 @@ impl Die {
                     result.dice_rolls.push(die_roll);
                     break;
                 }
+
+                println!("{die_roll}");
                 die_roll = self.engine_roll();
             },
             ComparisonMode::LessThan(target) => loop {
@@ -90,7 +92,7 @@ impl Die {
     }
 
     /// Roll a die and add more dice based on criteria
-    fn exploding(&self) -> RollResult {
+    fn exploding(&mut self) -> RollResult {
         let mut result = RollResult::new();
         let mut die_roll = self.engine_roll();
         match self.comparison_mode {
@@ -123,7 +125,7 @@ impl Die {
     }
 
     /// Roll a die and add to the total based on criteria
-    fn compounding(&self) -> RollResult {
+    fn compounding(&mut self) -> RollResult {
         let mut result = RollResult::new();
         let mut die_roll = self.engine_roll();
         let mut compounding_total = 0;
@@ -160,7 +162,7 @@ impl Die {
     }
 
     /// Roll a die and add another die subtracting 1 based on criteria
-    fn penetrating(&self) -> RollResult {
+    fn penetrating(&mut self) -> RollResult {
         let mut result = RollResult::new();
         let mut die_roll = self.engine_roll();
         let mut penetrated = false;
@@ -215,7 +217,7 @@ impl Die {
     }
 
     /// Roll a die, if the die fails criteria return one; otherwise leave dice_rolls empty
-    fn failure(&self) -> RollResult {
+    fn failure(&mut self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll = self.engine_roll();
         match self.comparison_mode {
@@ -239,7 +241,7 @@ impl Die {
     }
 
     /// Roll a die, if the die matches criteria return one; otherwise leave dice_rolls empty
-    fn success(&self) -> RollResult {
+    fn success(&mut self) -> RollResult {
         let mut result = RollResult::new();
         let die_roll = self.engine_roll();
         match self.comparison_mode {
@@ -263,11 +265,11 @@ impl Die {
     }
 
     /// Makes a call to the rng engine to generate a number
-    fn engine_roll(&self) -> i64 {
+    fn engine_roll(&mut self) -> i64 {
         self.engine.random(1, self.sides)
     }
 
-    pub fn roll(&self) -> RollResult {
+    pub fn roll(&mut self) -> RollResult {
         match self.roll_mode {
             RollMode::Normal => self.normal(),
             RollMode::Reroll => self.reroll(),

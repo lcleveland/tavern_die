@@ -8,7 +8,7 @@ impl PrngEngine {
     }
 }
 impl Engine for PrngEngine {
-    fn random(&self, min: i64, max: i64) -> i64 {
+    fn random(&mut self, min: i64, max: i64) -> i64 {
         return rand::thread_rng().gen_range(min..max + 1);
     }
 }
