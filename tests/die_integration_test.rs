@@ -127,3 +127,36 @@ fn compounding_less_than_test() {
     die.engine = Box::new(engine);
     assert_eq!(die.roll().dice_rolls[0], 69);
 }
+
+#[test]
+fn penetrating_equal_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Penetrating;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::Equal(21);
+    engine.rolls = vec![21, 21, 29];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 69);
+}
+
+#[test]
+fn penetrating_greater_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Penetrating;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::GreaterThan(20);
+    engine.rolls = vec![21, 21, 21, 9];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 69);
+}
+
+#[test]
+fn penetrating_less_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Penetrating;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::LessThan(22);
+    engine.rolls = vec![21, 21, 29];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 69);
+}
