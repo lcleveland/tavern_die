@@ -227,12 +227,12 @@ impl Die {
                 }
             }
             ComparisonMode::LessThan(target) => {
-                if die_roll > target {
+                if die_roll >= target {
                     result.dice_rolls.push(1);
                 }
             }
             ComparisonMode::GreaterThan(target) => {
-                if die_roll < target {
+                if die_roll <= target {
                     result.dice_rolls.push(1);
                 }
             }
