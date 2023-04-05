@@ -14,11 +14,7 @@ impl RollResult {
 
     /// Add all dice together
     pub fn sum(&self) -> i64 {
-        let mut sum: i64 = 0;
-        for roll in self.dice_rolls.iter() {
-            sum += roll;
-        }
-        sum
+        self.dice_rolls.iter().sum()
     }
 }
 
