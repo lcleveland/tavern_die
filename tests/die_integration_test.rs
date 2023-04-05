@@ -30,7 +30,7 @@ fn normal_less_than_test() {
 }
 
 #[test]
-fn reroll_normal_test() {
+fn reroll_equal_test() {
     let mut die = tavern_die::die::Die::default();
     let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
     engine.rolls = vec![3, 69];
@@ -63,7 +63,7 @@ fn reroll_less_than_test() {
 }
 
 #[test]
-fn exploding_normal_test() {
+fn exploding_equal_test() {
     let mut die = tavern_die::die::Die::default();
     let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
     die.roll_mode = tavern_die::die::mode::RollMode::Exploding;
@@ -93,4 +93,37 @@ fn exploding_less_than_test() {
     engine.rolls = vec![3, 3, 3, 60];
     die.engine = Box::new(engine);
     assert_eq!(die.roll().sum(), 69);
+}
+
+#[test]
+fn compounding_equal_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Compounding;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::Equal(20);
+    engine.rolls = vec![20, 20, 20, 9];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().dice_rolls[0], 69);
+}
+
+#[test]
+fn compounding_greater_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Compounding;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::GreaterThan(19);
+    engine.rolls = vec![20, 20, 20, 9];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().dice_rolls[0], 69);
+}
+
+#[test]
+fn compounding_less_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Compounding;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::LessThan(21);
+    engine.rolls = vec![20, 20, 29];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().dice_rolls[0], 69);
 }
