@@ -72,3 +72,25 @@ fn exploding_normal_test() {
     die.engine = Box::new(engine);
     assert_eq!(die.roll().sum(), 69);
 }
+
+#[test]
+fn exploding_greater_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Exploding;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::GreaterThan(4);
+    engine.rolls = vec![5, 5, 55, 4];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 69);
+}
+
+#[test]
+fn exploding_less_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Exploding;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::LessThan(4);
+    engine.rolls = vec![3, 3, 3, 60];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 69);
+}
