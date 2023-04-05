@@ -11,7 +11,7 @@ impl TestEngine {
 }
 
 impl Engine for TestEngine {
-    fn random(&mut self, min: i64, max: i64) -> i64 {
+    fn random(&mut self, _min: i64, _max: i64) -> i64 {
         self.rolls.remove(0)
     }
 }
