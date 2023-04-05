@@ -160,3 +160,36 @@ fn penetrating_less_than_test() {
     die.engine = Box::new(engine);
     assert_eq!(die.roll().sum(), 69);
 }
+
+#[test]
+fn failure_equal_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Failure;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::Equal(69);
+    engine.rolls = vec![68];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 1);
+}
+
+#[test]
+fn failure_greater_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Failure;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::GreaterThan(69);
+    engine.rolls = vec![68];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 1);
+}
+
+#[test]
+fn failure_less_than_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Failure;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::LessThan(69);
+    engine.rolls = vec![70];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 1);
+}
