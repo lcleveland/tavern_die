@@ -61,3 +61,14 @@ fn reroll_less_than_test() {
     die.engine = Box::new(engine);
     assert_eq!(die.roll().dice_rolls[0], 69);
 }
+
+#[test]
+fn exploding_normal_test() {
+    let mut die = tavern_die::die::Die::default();
+    let mut engine = tavern_die::rng_engine::test_engine::TestEngine::new();
+    die.roll_mode = tavern_die::die::mode::RollMode::Exploding;
+    die.comparison_mode = tavern_die::die::mode::ComparisonMode::Equal(5);
+    engine.rolls = vec![5, 5, 59];
+    die.engine = Box::new(engine);
+    assert_eq!(die.roll().sum(), 69);
+}
